@@ -1,0 +1,56 @@
+module AwaitStack;
+
+def Int maxi() = 10000000;
+def Int stackSize() = 10000000;
+
+interface IA {
+	Unit recursive_m1(Int s);
+	Unit recursive_m2(Int s);
+}
+	
+	
+class A implements IA{
+	Int i=0;
+	Bool b = False;
+	Unit recursive_m1(Int s){
+	   Int x = s;
+	   if (s>0){
+			this.recursive_m1(s - 1);
+			this.t(s);
+		}
+		else {
+
+			while (i<maxi()) {
+				i = i + 1;
+				await b == True;
+				b = False;
+			}
+		}
+	}
+
+	Unit recursive_m2(Int s){
+	   if (s>0){
+			this.recursive_m2(s - 1);
+			this.t(s);
+		}
+		else {
+			while (i<maxi()) {
+				i = i + 1;
+				await b == False;
+				b = True;
+			}
+		}
+	}
+	
+	Unit t(Int i)
+	{
+
+	}
+}
+
+{
+	IA a = new A();
+	Fut<Unit> f = a!recursive_m1(stackSize());
+	a!recursive_m2(stackSize());
+	f.get;
+}

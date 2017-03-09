@@ -1,0 +1,30 @@
+module AwaitNotify;
+def Int maxi() = 10000000;
+interface IA {
+	Unit m1();
+}
+
+class A implements IA {
+	Int i = 0;
+	Bool b = False;
+	Unit m1(){
+		this!m2();
+		while (i<maxi()) {
+			i = i + 1;
+			suspend;
+		}
+		b = True;
+	}
+
+	Unit m2(){
+		await b == True;
+		println("Done!");
+	}
+
+}
+
+{
+	IA a = new A();
+	Fut<Unit> f = a!m1();
+	f.get;
+}

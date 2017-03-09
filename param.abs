@@ -1,0 +1,3 @@
+module Param;
+def Int maxi() = 10000000;
+def Int stackSize() = 1000000;
