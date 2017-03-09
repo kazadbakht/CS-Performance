@@ -1,0 +1,27 @@
+module AwaitFut;
+
+def Int maxi() = 1000000;
+
+interface IA {
+	Unit m1(Int s);
+}
+	
+	
+class A implements IA{
+	Int i=0;
+	Unit m1(Int s){
+	   Int x = s;
+	   if (s>0){
+			Fut<Unit> f =  this!m1(s - 1);
+			await f?;
+		}
+	}
+}
+
+
+{
+	IA a = new A();
+	Fut<Unit> f = a!m1(maxi());
+	f.get;
+	print("Done!");
+}
